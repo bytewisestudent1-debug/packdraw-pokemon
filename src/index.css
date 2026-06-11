@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #111010;
+  --paper: #EDE9E3;
+  --amber: #E8A045;
+  --muted: #6B6560;
+  --surface: #1A1918;
+  --line: #2A2826;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--ink);
+  color: var(--paper);
+  font-family: 'Outfit', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Animations ──────────────────────────────── */
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes lineGrow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+.anim-fade-up {
+  animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.anim-fade-in {
+  animation: fadeIn 0.7s ease both;
+}
+
+.anim-line {
+  animation: lineGrow 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: left center;
+}
+
+.anim-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.delay-0   { animation-delay: 0s; }
+.delay-1   { animation-delay: 0.12s; }
+.delay-2   { animation-delay: 0.24s; }
+.delay-3   { animation-delay: 0.36s; }
+.delay-4   { animation-delay: 0.48s; }
+.delay-5   { animation-delay: 0.60s; }
+.delay-6   { animation-delay: 0.72s; }
+.delay-7   { animation-delay: 0.84s; }
+
+/* ─── Text outline ───────────────────────────── */
+
+.text-stroke {
+  -webkit-text-stroke: 1.5px var(--paper);
+  color: transparent;
+}
+
+.text-stroke-amber {
+  -webkit-text-stroke: 1.5px var(--amber);
+  color: transparent;
+}
+
+/* ─── Card flip ─────────────────────────────── */
+
+.flip-card { perspective: 1200px; }
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.flip-card-inner.is-flipped { transform: rotateY(180deg); }
+
+.flip-card-back,
+.flip-card-front {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip-card-front { transform: rotateY(180deg); }
+
+/* ─── Holographic shimmer ────────────────────── */
+
+@keyframes holo {
+  0%   { background-position: 0% 0%; }
+  50%  { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+/* ─── Battle card shake ──────────────────────── */
+
+@keyframes card-shake {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  15%       { transform: translateX(-7px) rotate(-2deg); }
+  30%       { transform: translateX(7px) rotate(2deg); }
+  45%       { transform: translateX(-5px) rotate(-1.5deg); }
+  60%       { transform: translateX(5px) rotate(1.5deg); }
+  75%       { transform: translateX(-3px) rotate(-1deg); }
+  90%       { transform: translateX(3px) rotate(1deg); }
+}
+
+.card-shake { animation: card-shake 0.42s ease-in-out; }
+
+/* ─── Scrollbar ──────────────────────────────── */
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
