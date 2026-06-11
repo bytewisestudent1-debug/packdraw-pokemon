@@ -8,12 +8,15 @@ import Opening from './pages/Opening'
 import Collection from './pages/Collection'
 import Stats from './pages/Stats'
 import Battle from './pages/Battle'
+import LoadingScreen from './components/LoadingScreen'
 
 function AppContent() {
   const [page, setPage] = useState('shop')
+  const [loading, setLoading] = useState(true)
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--ink)', color: 'var(--paper)' }}>
+      {loading && <LoadingScreen onDone={() => setLoading(false)} />}
       <Grain />
       {page !== 'opening' && <Navbar page={page} setPage={setPage} />}
       <main>
