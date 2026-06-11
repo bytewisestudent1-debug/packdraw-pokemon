@@ -35,18 +35,28 @@ function PackCard({ pack, canBuy, owned, onBuy, onOpen }) {
       style={{ background: 'var(--surface)', border: '1px solid var(--line)' }}
     >
       <div
-        className="h-32 flex items-center justify-center relative overflow-hidden"
+        className="h-36 flex items-center justify-center relative overflow-hidden"
         style={{ background: `linear-gradient(145deg, ${pack.gradFrom}, ${pack.gradTo})` }}
       >
         <div
           className="absolute inset-0 pointer-events-none"
           style={{ backgroundImage: 'repeating-linear-gradient(45deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 9px)' }}
         />
+        {/* Glow circle behind icon */}
+        <div
+          className="absolute"
+          style={{
+            width: 80,
+            height: 80,
+            borderRadius: '50%',
+            background: `radial-gradient(circle, ${pack.accentColor}30 0%, transparent 70%)`,
+          }}
+        />
         <div className="relative text-center">
-          <div className="font-display font-bold" style={{ fontSize: 36, color: pack.accentColor, textShadow: `0 0 24px ${pack.accentColor}55` }}>
-            PACK
+          <div style={{ fontSize: 40, lineHeight: 1, marginBottom: 4 }}>{pack.icon}</div>
+          <div className="font-mono text-xs tracking-[0.2em] uppercase" style={{ color: pack.accentColor + 'cc' }}>
+            {pack.cardCount} cards
           </div>
-          <div className="font-mono text-xs mt-0.5" style={{ color: pack.accentColor + 'aa' }}>{pack.cardCount} cards</div>
         </div>
       </div>
 

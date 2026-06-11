@@ -115,6 +115,7 @@ export default function Collection({ setPage }) {
   const [filter, setFilter] = useState('all')
   const [sort, setSort] = useState('rarity')
   const [view, setView] = useState('cards') // 'cards' | 'dex'
+  const [search, setSearch] = useState('')
 
   const { collection } = state
 
@@ -132,6 +133,7 @@ export default function Collection({ setPage }) {
 
   const shown = collection
     .filter(c => filter === 'all' || c.rarity === filter)
+    .filter(c => !search || c.name.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => {
       if (sort === 'rarity')    return RARITY_ORDER[b.rarity] - RARITY_ORDER[a.rarity]
       if (sort === 'name')      return a.name.localeCompare(b.name)
@@ -182,6 +184,23 @@ export default function Collection({ setPage }) {
 
         {/* Controls */}
         <div className="flex flex-wrap items-center gap-2 mt-4 md:mt-0">
+          {/* Search */}
+          <input
+            type="text"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Search…"
+            className="font-mono text-xs px-3 py-2 outline-none"
+            style={{
+              background: 'var(--surface)',
+              color: 'var(--paper)',
+              border: '1px solid var(--line)',
+              width: 120,
+            }}
+            onFocus={e => (e.currentTarget.style.borderColor = 'var(--amber)')}
+            onBlur={e => (e.currentTarget.style.borderColor = 'var(--line)')}
+          />
+
           {/* View toggle */}
           <div className="flex" style={{ border: '1px solid var(--line)' }}>
             {[['cards', 'Cards'], ['dex', 'Pokédex']].map(([v, lbl]) => (

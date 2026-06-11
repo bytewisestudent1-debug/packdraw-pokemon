@@ -4,9 +4,21 @@ import { RARITY_CONFIG } from '../data/cards'
 import Card from '../components/Card'
 import CardBack from '../components/CardBack'
 
-function FlipCard({ card, flipped }) {
+function FlipCard({ card, flipped, onClick }) {
   return (
-    <div className="flip-card" style={{ width: 160, height: 224 }}>
+    <div
+      className="flip-card select-none"
+      style={{
+        width: 160,
+        height: 224,
+        cursor: flipped ? 'default' : 'pointer',
+        transform: flipped ? undefined : undefined,
+        transition: 'transform 0.15s ease',
+      }}
+      onClick={!flipped ? onClick : undefined}
+      onMouseEnter={e => { if (!flipped) e.currentTarget.style.transform = 'scale(1.06) translateY(-4px)' }}
+      onMouseLeave={e => { if (!flipped) e.currentTarget.style.transform = 'none' }}
+    >
       <div className={`flip-card-inner${flipped ? ' is-flipped' : ''}`}>
         <div className="flip-card-back"><CardBack /></div>
         <div className="flip-card-front">
@@ -27,7 +39,7 @@ function FlipCard({ card, flipped }) {
 export default function Opening({ setPage }) {
   const { state, dispatch } = useGame()
   const [phase, setPhase] = useState('intro')   // intro | reveal | done
-  const [flipIdx, setFlipIdx] = useState(-1)
+  const [flipped, setFlipped] = useState(new Set())
 
   const cards = state.pendingCards
 
@@ -39,10 +51,25 @@ export default function Opening({ setPage }) {
 
   function startReveal() {
     setPhase('reveal')
-    cards.forEach((_, i) => {
-      setTimeout(() => setFlipIdx(i), i * 650)
+    setFlipped(new Set())
+  }
+
+  function flipCard(i) {
+    if (phase !== 'reveal') return
+    setFlipped(prev => {
+      const next = new Set(prev)
+      next.add(i)
+      if (next.size === cards.length) {
+        setTimeout(() => setPhase('done'), 400)
+      }
+      return next
     })
-    setTimeout(() => setPhase('done'), cards.length * 650 + 400)
+  }
+
+  function revealAll() {
+    const all = new Set(cards.map((_, i) => i))
+    setFlipped(all)
+    setTimeout(() => setPhase('done'), 400)
   }
 
   function confirm() {
@@ -54,6 +81,8 @@ export default function Opening({ setPage }) {
     const order = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 }
     return order[c.rarity] > order[b.rarity] ? c : b
   }, cards[0])
+
+  const unflippedCount = cards.length - flipped.size
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 pt-20">
@@ -75,7 +104,7 @@ export default function Opening({ setPage }) {
             <em className="not-italic" style={{ color: 'var(--amber)' }}>Rip It?</em>
           </h2>
           <p className="font-body font-light mb-10" style={{ color: 'var(--muted)' }}>
-            {cards.length} cards waiting inside.
+            {cards.length} cards waiting inside — click each one to reveal it.
           </p>
           <button
             onClick={startReveal}
@@ -91,15 +120,36 @@ export default function Opening({ setPage }) {
 
       {(phase === 'reveal' || phase === 'done') && (
         <div className="w-full max-w-4xl">
-          <div className="text-center mb-8">
+          <div className="flex items-center justify-between mb-8 px-2">
             <span className="font-mono text-xs" style={{ color: 'var(--muted)' }}>
-              {Math.min(flipIdx + 1, cards.length)} / {cards.length} revealed
+              {flipped.size} / {cards.length} revealed
             </span>
+            {unflippedCount > 0 && phase === 'reveal' && (
+              <div className="flex items-center gap-4">
+                <span className="font-mono text-xs" style={{ color: 'var(--muted)' }}>
+                  👆 Click a card to flip it
+                </span>
+                <button
+                  onClick={revealAll}
+                  className="font-mono text-xs uppercase tracking-wider px-4 py-1.5 transition-all duration-200"
+                  style={{ border: '1px solid var(--line)', color: 'var(--muted)' }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--amber)'; e.currentTarget.style.color = 'var(--amber)' }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--line)'; e.currentTarget.style.color = 'var(--muted)' }}
+                >
+                  Reveal All →
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="flex flex-wrap justify-center gap-4 mb-10">
             {cards.map((card, i) => (
-              <FlipCard key={card.instanceId} card={card} flipped={i <= flipIdx} />
+              <FlipCard
+                key={card.instanceId}
+                card={card}
+                flipped={flipped.has(i)}
+                onClick={() => flipCard(i)}
+              />
             ))}
           </div>
 
