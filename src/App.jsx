@@ -8,8 +8,6 @@ import Opening from './pages/Opening'
 import Collection from './pages/Collection'
 import Stats from './pages/Stats'
 import Battle from './pages/Battle'
-import Trade from './pages/Trade'
-import Quests from './pages/Quests'
 import LoadingScreen from './components/LoadingScreen'
 
 function AppContent() {
@@ -27,8 +25,6 @@ function AppContent() {
         {page === 'collection' && <Collection setPage={setPage} />}
         {page === 'stats'      && <Stats setPage={setPage} />}
         {page === 'battle'     && <Battle setPage={setPage} />}
-        {page === 'trade'      && <Trade setPage={setPage} />}
-        {page === 'quests'     && <Quests setPage={setPage} />}
       </main>
     </div>
   )

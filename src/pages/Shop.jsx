@@ -192,64 +192,35 @@ export default function Shop({ setPage }) {
           </button>
         </div>
 
-        {/* Luck Meter */}
+        {/* Pity counter */}
         <div
           className="p-5 rounded-xl"
-          style={{
-            background: 'var(--surface)',
-            border: `1px solid ${pityPct >= 100 ? '#F472B688' : pityPct >= 60 ? '#FBBF2444' : 'var(--line)'}`,
-            boxShadow: pityPct >= 100 ? '0 0 22px rgba(244,114,182,0.2)' : 'none',
-            transition: 'box-shadow 0.4s ease, border-color 0.4s ease',
-          }}
+          style={{ background: 'var(--surface)', border: '1px solid var(--line)' }}
         >
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <span style={{ fontSize: 14 }}>⚡</span>
-              <span className="font-mono text-xs uppercase tracking-widest" style={{ color: 'var(--muted)' }}>
-                Luck Meter
-              </span>
+          <div className="flex items-center justify-between mb-2">
+            <div className="font-mono text-xs uppercase tracking-widest" style={{ color: 'var(--muted)' }}>
+              Rare Pity Counter
             </div>
-            <span
-              className="font-mono text-sm font-bold"
-              style={{
-                color: pityPct >= 100 ? '#F472B6' : pityPct >= 60 ? '#FBBF24' : '#60A5FA',
-              }}
-            >
+            <span className="font-mono text-sm font-bold" style={{ color: '#60A5FA' }}>
               {state.packsSinceRare}/10
             </span>
           </div>
-
-          {/* Segmented bar */}
-          <div className="relative mb-3">
-            <div className="h-3 rounded-full overflow-hidden" style={{ background: 'var(--line)' }}>
-              <div
-                className="h-full rounded-full transition-all duration-700"
-                style={{
-                  width: `${pityPct}%`,
-                  background: pityPct >= 100
-                    ? 'linear-gradient(90deg, #60A5FA, #FBBF24, #F472B6)'
-                    : pityPct >= 60
-                      ? 'linear-gradient(90deg, #60A5FA, #FBBF24)'
-                      : '#60A5FA',
-                }}
-              />
-            </div>
-            {/* Milestone tick at 50% */}
+          <div className="h-2 rounded-full mb-2" style={{ background: 'var(--line)' }}>
             <div
-              className="absolute top-0 bottom-0 w-px"
-              style={{ left: '50%', background: 'var(--ink)', opacity: 0.5 }}
+              className="h-full rounded-full transition-all duration-500"
+              style={{
+                width: `${pityPct}%`,
+                background: pityPct >= 80
+                  ? 'linear-gradient(90deg, #60A5FA, #F472B6)'
+                  : '#60A5FA',
+              }}
             />
           </div>
-
-          {pityPct >= 100 ? (
-            <p className="font-mono text-xs font-bold text-center" style={{ color: '#F472B6' }}>
-              ✨ GUARANTEED RARE+ ON YOUR NEXT PACK! ✨
-            </p>
-          ) : (
-            <p className="font-body text-xs font-light" style={{ color: 'var(--muted)' }}>
-              {10 - state.packsSinceRare} more pack{10 - state.packsSinceRare !== 1 ? 's' : ''} until a Rare+ is guaranteed.
-            </p>
-          )}
+          <p className="font-body text-xs font-light" style={{ color: 'var(--muted)' }}>
+            {state.packsSinceRare >= 10
+              ? '⚡ Guaranteed Rare+ on next pack!'
+              : `Open ${10 - state.packsSinceRare} more pack${10 - state.packsSinceRare !== 1 ? 's' : ''} to guarantee a Rare+.`}
+          </p>
         </div>
       </div>
 
