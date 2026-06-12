@@ -253,7 +253,7 @@ function Offers({ trader, offers, onAccept, onBack, noCards, onRefresh }) {
           className="p-10 rounded-xl text-center"
           style={{ background: 'var(--surface)', border: '1px solid var(--line)' }}
         >
-          <div style={{ fontSize: 40, marginBottom: 12 }}>📭</div>
+            <div style={{ fontSize: 40, marginBottom: 12 }}>📭</div>
           <p className="font-body font-light" style={{ color: 'var(--muted)' }}>
             You need cards to trade. Open some packs first!
           </p>
