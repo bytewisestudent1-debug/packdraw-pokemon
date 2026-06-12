@@ -22,11 +22,6 @@ export const DEFAULT_STATE = {
   battleLosses: 0,
   battleStreak: 0,
   bestStreak: 0,
-  // trade stats
-  tradesCompleted: 0,
-  // daily quests
-  dailyQuests: [],
-  lastQuestDate: null,
 }
 
 export function canClaimDaily(lastDailyClaim) {
