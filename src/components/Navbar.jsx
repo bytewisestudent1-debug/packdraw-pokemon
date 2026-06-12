@@ -26,17 +26,19 @@ export default function Navbar({ page, setPage }) {
       </button>
 
       {/* Nav */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-0.5">
         {[
-          { id: 'shop', label: 'Shop' },
+          { id: 'shop',       label: 'Shop' },
           { id: 'collection', label: `Collection${state.collection.length ? ` (${state.collection.length})` : ''}` },
-          { id: 'battle', label: '⚔️ Battle' },
-          { id: 'stats', label: 'Stats' },
+          { id: 'battle',     label: '⚔️ Battle' },
+          { id: 'trade',      label: '🤝 Trade' },
+          { id: 'quests',     label: '📋 Quests' },
+          { id: 'stats',      label: 'Stats' },
         ].map(item => (
           <button
             key={item.id}
             onClick={() => setPage(item.id)}
-            className="px-4 py-2 font-mono text-xs tracking-wider uppercase transition-all duration-200 rounded"
+            className="px-3 py-1.5 font-mono text-[10px] tracking-wide uppercase transition-all duration-200 rounded whitespace-nowrap"
             style={{
               color: page === item.id ? 'var(--amber)' : 'var(--muted)',
               background: page === item.id ? 'rgba(232,160,69,0.1)' : 'transparent',
